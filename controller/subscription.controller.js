@@ -38,6 +38,7 @@ const createSubscription = async (req, res) => {
         }, {
             headers: await getSubscriptionHeaders(),
         });
+        console.log(data);
         if (data) {
             await SubscriptionModel.createSubscriptionPlans({
                 subscriptionRequestId: data?.subscriptionRequestId,

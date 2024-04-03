@@ -7,6 +7,9 @@ const subscriptioSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+    subscriptionRequestId:{
+        type:String
+    },
     createdAt: {
         type: Date,
         default: Date.now,

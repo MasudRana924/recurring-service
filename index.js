@@ -7,7 +7,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:5173',
+    // origin: 'http://localhost:5173',
+    origin: 'https://recurring-app.vercel.app',
     credentials: true
 }));
 // app.use(cors());
