@@ -1,6 +1,9 @@
 const axios = require('axios');
 const SubscriptionModel = require('../models/subscription');
 const uuidv4 = require('uuid').v4;
+const moment = require('moment');
+
+
 const getSubscriptionHeaders = async () => {
     return {
         'version': 'v1.0',
@@ -15,6 +18,10 @@ const getSubscriptionHeaders = async () => {
 const createSubscription = async (req, res) => {
     const { amount, frequency } = req.body;
     const id = uuidv4();
+    const startDate = moment().format('YYYY-MM-DD');
+    const expiryDate = moment().add(1, 'days').format('YYYY-MM-DD');
+    console.log(startDate);
+    console.log(expiryDate);
     try {
         const { data } = await axios.post("https://gateway.sbrecurring.pay.bka.sh/gateway/api/subscription", {
             "subscriptionRequestId": id,
@@ -25,8 +32,8 @@ const createSubscription = async (req, res) => {
             "amount": amount,
             "currency": "BDT",
             "frequency": frequency,
-            "startDate": "2024-04-03",
-            "expiryDate": "2024-04-04",
+            "startDate": startDate,
+            "expiryDate": expiryDate,
             "payerType": "CUSTOMER",
             "payer": null,
             "subscriptionReference": "user",
