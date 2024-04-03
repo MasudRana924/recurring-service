@@ -10,6 +10,8 @@ app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
 }));
+// app.use(cors());
+// app.options('*', cors());
 app.use('/api',routes );
 const port = process.env.PORT || 5000
 app.get('/', (req, res) => res.send('server is running'))

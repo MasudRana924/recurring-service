@@ -1,5 +1,6 @@
 const axios = require('axios');
-const SubscriptionModel=require('../models/subscription')
+const SubscriptionModel = require('../models/subscription');
+const uuidv4 = require('uuid').v4;
 const getSubscriptionHeaders = async () => {
     return {
         'version': 'v1.0',
@@ -13,11 +14,10 @@ const getSubscriptionHeaders = async () => {
 
 const createSubscription = async (req, res) => {
     const { amount, frequency } = req.body;
-    console.log("amount",amount);
-    console.log("amount",frequency);
+    const id = uuidv4();
     try {
         const { data } = await axios.post("https://gateway.sbrecurring.pay.bka.sh/gateway/api/subscription", {
-            "subscriptionRequestId": 'test-09876',
+            "subscriptionRequestId": id,
             "serviceId": "100001",
             "redirectUrl": "https://app.gktechbd.com/api/v2/auto-pay/response/bkash/callback/",
             "paymentType": "FIXED",
@@ -38,9 +38,9 @@ const createSubscription = async (req, res) => {
         }, {
             headers: await getSubscriptionHeaders(),
         });
-        if(data){
+        if (data) {
             await SubscriptionModel.createSubscriptionPlans({
-                subscriptionRequestId:data?.subscriptionRequestId,
+                subscriptionRequestId: data?.subscriptionRequestId,
                 amount: parseInt(data.amount)
             })
         }
@@ -49,6 +49,6 @@ const createSubscription = async (req, res) => {
         return res.status(500).json({ error: 'Payment creation failed' });
     }
 };
-module.exports={
+module.exports = {
     createSubscription
 }
